@@ -13,12 +13,16 @@ import MBProgressHUD
 class MoviesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var errorView: UIView!
     
     
     var movies: [NSDictionary]?
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        
+        errorView.isHidden = true
         
         tableView.dataSource = self
         tableView.delegate = self
@@ -27,21 +31,35 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         let refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action: #selector(refreshControlAction(_:)), for: UIControlEvents.valueChanged)
         tableView.insertSubview(refreshControl, at: 0)
+        
+        let apiKey = "a07e22bc18f5cb106bfe4cc1f83ad8ed"
+        let url = URL(string: "https://api.themoviedb.org/3/movie/now_playing?api_key=\(apiKey)")!
+        let request = URLRequest(url: url, cachePolicy: .reloadIgnoringLocalCacheData, timeoutInterval: 10)
+        let session = URLSession(configuration: .default, delegate: nil, delegateQueue: OperationQueue.main)
+        
+        MBProgressHUD.showAdded(to: self.view, animated: true) // show loading state
+        
+        let task: URLSessionDataTask = session.dataTask(with: request) { (data: Data?, response: URLResponse?, error: Error?) in
+            if let data = data {
+                if let dataDictionary = try! JSONSerialization.jsonObject(with: data, options: []) as? NSDictionary {
+                    
+                    // print(dataDictionary)
+                    self.movies = (dataDictionary["results"] as! [NSDictionary])
+                    
+                    
+                    self.tableView.reloadData()
+                    
+                    MBProgressHUD.hide(for: self.view, animated: true) // hide loading state
+                    refreshControl.endRefreshing()
+                }
+            } else {
+                self.errorView.isHidden = false
+            }
+        }
+        task.resume()
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if let movies = movies {
-            return movies.count
-        } else {
-            return 0
-        }
-    }
-    
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "MovieCell", for: indexPath) as! MovieCell
         
@@ -65,32 +83,27 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
     
     func refreshControlAction(_ refreshControl: UIRefreshControl) {
         
-        let apiKey = "a07e22bc18f5cb106bfe4cc1f83ad8ed"
-        let url = URL(string: "https://api.themoviedb.org/3/movie/now_playing?api_key=\(apiKey)")!
-        let request = URLRequest(url: url, cachePolicy: .reloadIgnoringLocalCacheData, timeoutInterval: 10)
-        let session = URLSession(configuration: .default, delegate: nil, delegateQueue: OperationQueue.main)
+        // When there is no data, refresh tableView
+        self.tableView.reloadData()
         
-        MBProgressHUD.showAdded(to: self.view, animated: true) // show loading state
-        
-        let task: URLSessionDataTask = session.dataTask(with: request) { (data: Data?, response: URLResponse?, error: Error?) in
-            if let data = data {
-                if let dataDictionary = try! JSONSerialization.jsonObject(with: data, options: []) as? NSDictionary {
-                    
-                    // print(dataDictionary)
-                    self.movies = (dataDictionary["results"] as! [NSDictionary])
-                    
-                    
-                    self.tableView.reloadData()
-                    
-                    MBProgressHUD.hide(for: self.view, animated: true) // hide loading state
-                    refreshControl.endRefreshing()
-                }
-            }
-        }
-        task.resume()
-        
-        
+        // Tell the refreshControl to stop spinning
+        refreshControl.endRefreshing()
+
     }
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if let movies = movies {
+            return movies.count
+        } else {
+            return 0
+        }
+    }
+    
 
     /*
     // MARK: - Navigation
