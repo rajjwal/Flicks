@@ -10,12 +10,13 @@ import UIKit
 import AFNetworking
 import MBProgressHUD
 
-class MoviesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate{
 
+class MoviesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate{
+    
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var errorView: UIView!
     @IBOutlet weak var searchBar: UISearchBar!
-    
+  
     
     var movies: [NSDictionary]?
     var filteredData: [NSDictionary]?
@@ -100,6 +101,11 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         let imageURL = NSURL(string: baseURL + posterPath)
         
         
+
+        
+        
+        
+        
         
         let imageRequest = NSURLRequest(url: imageURL as! URL)
         
@@ -131,6 +137,30 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         cell.posterView.setImageWith(imageURL! as URL)
         
         
+        
+        
+        let star = (movie["vote_average"] as! Float) / 2
+        
+        // show stars precisely, not only full stars
+        cell.cosmosView.settings.fillMode = .precise
+        
+        // Change the cosmos view rating
+        cell.cosmosView.rating = Double(star)
+        
+        
+        // Change the text
+        cell.cosmosView.text = String(star)
+        
+
+        // Called when user finishes changing the rating by lifting the finger from the view.
+        // This may be a good place to save the rating in the database or send to the server.
+        cell.cosmosView.didFinishTouchingCosmos = { rating in }
+        
+        // A closure that is called when user changes the rating by touching the view.
+        // This can be used to update UI as the rating is being changed by moving a finger.
+        cell.cosmosView.didTouchCosmos = { rating in }
+        
+        
 //        print ("row \(indexPath.row)")
         return cell
     }
@@ -158,18 +188,12 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         search.showsCancelButton = false
         search.text = ""
         search.resignFirstResponder()
-
-    
-   
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+        
+        // Reload data after user presses cancel in the search bar
+        self.filteredData = self.movies
+        tableView.reloadData()
     }
-    */
+        
+    
+}
 
-}
-}

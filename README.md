@@ -19,22 +19,24 @@ The following **optional** features are implemented:
 - [ ] Movies are displayed using a CollectionView instead of a TableView.
 - [X] User can search for a movie.
 - [X] All images fade in as they are loading.
-- [ ] Customize the UI.
+- [X] Customize the UI -- Added Star Ratings for the movies
 
 The following **additional** features are implemented:
 
-- [ ] List anything else that you can get done to improve the app functionality!
+- [X] Added Star ratings based on vote_avarage.
+- [X] Added feature to reload default movie list if user presses cancel in the search bar.
+- [X] Changed the theme of the app to black.
 
 Please list two areas of the assignment you'd like to **discuss further with your peers** during the next class (examples include better ways to implement something, how to extend your app in certain ways, etc):
 
-1. 
-2. 
+1. Adding different views to the app leading to the trailers of the movies.
+2. Adding feature to rate the movies.
 
 ## Video Walkthrough 
 
 Here's a walkthrough of implemented user stories:
 
-<img src='http://i.imgur.com/link/to/your/gif/file.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+<img src = "Flicks.gif" />
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
