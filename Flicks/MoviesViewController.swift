@@ -193,7 +193,27 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         self.filteredData = self.movies
         tableView.reloadData()
     }
+    
+    
+     // MARK: - Navigation		          
+     // In a storyboard-based application, you will often want to do a little preparation before navigation
+     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
+        let cell = sender as! UITableViewCell
+        let indexPath = tableView.indexPath(for: cell)
+        let movie = movies![indexPath!.row]
+        
+        let detailViewController = segue.destination as! DetailViewController
+        detailViewController.movie = movie
+        
+         
+        
+        
+        print ("Prepare for segue called")
+
+    }
+   
+    
     
 }
 
