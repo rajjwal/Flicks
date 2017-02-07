@@ -10,27 +10,30 @@ import UIKit
 import AFNetworking
 import MBProgressHUD
 
-class MoviesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class MoviesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate{
 
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var errorView: UIView!
+    @IBOutlet weak var searchBar: UISearchBar!
     
     
     var movies: [NSDictionary]?
+    var filteredData: [NSDictionary]?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
         errorView.isHidden = true
-        
-        tableView.dataSource = self
-        tableView.delegate = self
         
         // Initialize a UIRefreshControl
         let refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action: #selector(refreshControlAction(_:)), for: UIControlEvents.valueChanged)
         tableView.insertSubview(refreshControl, at: 0)
+        
+        tableView.dataSource = self
+        tableView.delegate = self
+        searchBar.delegate = self
+
         
         let apiKey = "a07e22bc18f5cb106bfe4cc1f83ad8ed"
         let url = URL(string: "https://api.themoviedb.org/3/movie/now_playing?api_key=\(apiKey)")!
@@ -46,6 +49,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
                     // print(dataDictionary)
                     self.movies = (dataDictionary["results"] as! [NSDictionary])
                     
+                    self.filteredData = self.movies
                     
                     self.tableView.reloadData()
                     
@@ -58,12 +62,37 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         }
         task.resume()
     }
+    
+    func refreshControlAction(_ refreshControl: UIRefreshControl) {
+        
+        // When there is no data, refresh tableView
+        self.tableView.reloadData()
+        
+        // Tell the refreshControl to stop spinning
+        refreshControl.endRefreshing()
+        
+    }
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if let filteredData = filteredData {
+            return filteredData.count
+        } else {
+            return 0
+        }
+    }
+    
+
 
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "MovieCell", for: indexPath) as! MovieCell
         
-        let movie = movies![indexPath.row]
+        let movie = filteredData![indexPath.row]
         let title = movie["title"] as! String
         let overview = movie["overview"] as! String
         let baseURL = "https://image.tmdb.org/t/p/w500"
@@ -81,30 +110,31 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
     }
     
     
-    func refreshControlAction(_ refreshControl: UIRefreshControl) {
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        // When there is no text, filteredData is the same as the original data
+        // When user has entered text into the search box
+        // Use the filter method to iterate over all items in the data array
+        // For each item, return true if the item should be included and false if the
+        // item should NOT be included
+            filteredData = searchText.isEmpty ? movies : movies?.filter({(movies: NSDictionary) -> Bool in
+            // If dataItem matches the searchText, return true to include it
+            return (movies["title"] as? String)?.range(of: searchText, options: .caseInsensitive) != nil
+        })
+        tableView.reloadData()
         
-        // When there is no data, refresh tableView
-        self.tableView.reloadData()
-        
-        // Tell the refreshControl to stop spinning
-        refreshControl.endRefreshing()
+    }
+    
+    func searchBarTextDidBeginEditing(_ search: UISearchBar) {
+        self.searchBar.showsCancelButton = true
+    }
+    
+    func searchBarCancelButtonClicked(_ search: UISearchBar) {
+        search.showsCancelButton = false
+        search.text = ""
+        search.resignFirstResponder()
 
-    }
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if let movies = movies {
-            return movies.count
-        } else {
-            return 0
-        }
-    }
-    
-
+   
     /*
     // MARK: - Navigation
 
@@ -115,4 +145,5 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
     }
     */
 
+}
 }
