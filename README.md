@@ -33,7 +33,7 @@ Please list two areas of the assignment you'd like to **discuss further with you
 
 Here's a walkthrough of implemented user stories:
 
-<img src= "Flicks2.gif"/>
+<img src= "Flicks-2.gif"/>
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
