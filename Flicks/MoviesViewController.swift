@@ -19,7 +19,10 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
   
     
     var movies: [NSDictionary]?
+    var allmovies: [NSDictionary]?
     var filteredData: [NSDictionary]?
+    var endpoint: String!
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,7 +40,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
 
         
         let apiKey = "a07e22bc18f5cb106bfe4cc1f83ad8ed"
-        let url = URL(string: "https://api.themoviedb.org/3/movie/now_playing?api_key=\(apiKey)")!
+        let url = URL(string: "https://api.themoviedb.org/3/movie/\(endpoint!)?api_key=\(apiKey)")!
         let request = URLRequest(url: url, cachePolicy: .reloadIgnoringLocalCacheData, timeoutInterval: 10)
         let session = URLSession(configuration: .default, delegate: nil, delegateQueue: OperationQueue.main)
         
@@ -48,7 +51,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
                 if let dataDictionary = try! JSONSerialization.jsonObject(with: data, options: []) as? NSDictionary {
                     
                     // print(dataDictionary)
-                    self.movies = (dataDictionary["results"] as! [NSDictionary])
+                    self.movies = (dataDictionary["results"] as! [NSDictionary]?)
                     
                     self.filteredData = self.movies
                     
@@ -96,9 +99,9 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         let movie = filteredData![indexPath.row]
         let title = movie["title"] as! String
         let overview = movie["overview"] as! String
-        let baseURL = "https://image.tmdb.org/t/p/w500"
-        let posterPath = movie["poster_path"] as! String
-        let imageURL = NSURL(string: baseURL + posterPath)
+        let baseURL = "https://image.tmdb.org/t/p/original"
+        let posterPath = movie["poster_path"] as? String
+        let imageURL = NSURL(string: baseURL + posterPath!)
         
         
 
@@ -149,16 +152,16 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         
         
         // Change the text
-        cell.cosmosView.text = String(star)
+        cell.cosmosView.text = " " + String(star)
         
 
         // Called when user finishes changing the rating by lifting the finger from the view.
         // This may be a good place to save the rating in the database or send to the server.
-        cell.cosmosView.didFinishTouchingCosmos = { rating in }
+        // cell.cosmosView.didFinishTouchingCosmos = { rating in }
         
         // A closure that is called when user changes the rating by touching the view.
         // This can be used to update UI as the rating is being changed by moving a finger.
-        cell.cosmosView.didTouchCosmos = { rating in }
+        // cell.cosmosView.didTouchCosmos = { rating in }
         
         
 //        print ("row \(indexPath.row)")
@@ -172,11 +175,46 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         // Use the filter method to iterate over all items in the data array
         // For each item, return true if the item should be included and false if the
         // item should NOT be included
-            filteredData = searchText.isEmpty ? movies : movies?.filter({(movies: NSDictionary) -> Bool in
+        
+        let apiKey = "a07e22bc18f5cb106bfe4cc1f83ad8ed"
+        let searchurl = URL(string: "https://api.themoviedb.org/3/search/movie?api_key=\(apiKey)&query=\(searchText)")!
+        let request = URLRequest(url: searchurl, cachePolicy: .reloadIgnoringLocalCacheData, timeoutInterval: 10)
+        let session = URLSession(configuration: .default, delegate: nil, delegateQueue: OperationQueue.main)
+        
+        
+        let task: URLSessionDataTask = session.dataTask(with: request) { (data: Data?, response: URLResponse?, error: Error?) in
+            if let dataDictionary = try! JSONSerialization.jsonObject(with: data!, options: []) as? NSDictionary {
+                
+                //                    print(dataDictionary)
+                
+                self.allmovies = (dataDictionary["results"] as! [NSDictionary]?)
+                
+                //                    print(self.allmovies)
+                self.filteredData = self.allmovies
+                //
+                self.tableView.reloadData()
+                //            }
+            }
+        }
+        task.resume()
+        
+        
+        
+        filteredData = searchText.isEmpty ? movies : allmovies?.filter({(movies: NSDictionary) -> Bool in
             // If dataItem matches the searchText, return true to include it
+            
+            
+            
+            
             return (movies["title"] as? String)?.range(of: searchText, options: .caseInsensitive) != nil
+            
         })
+        
         tableView.reloadData()
+        
+        
+        
+        
         
     }
     
@@ -201,7 +239,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         
         let cell = sender as! UITableViewCell
         let indexPath = tableView.indexPath(for: cell)
-        let movie = movies![indexPath!.row]
+        let movie = filteredData![indexPath!.row]
         
         let detailViewController = segue.destination as! DetailViewController
         detailViewController.movie = movie

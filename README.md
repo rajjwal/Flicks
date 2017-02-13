@@ -1,3 +1,43 @@
+
+# Project 2 - Flicks
+
+**Name of your app** is a movies app displaying box office and top rental DVDs using [The Movie Database API](http://docs.themoviedb.apiary.io/#).
+
+Time spent: 7 hours spent in total
+
+## User Stories
+
+The following **required** functionality is completed:
+
+- [X] User can view movie details by tapping on a cell.
+- [X] User can select from a tab bar for either **Now Playing** or **Top Rated** movies.
+- [X] Customize the selection effect of the cell.
+
+The following **optional** features are implemented:
+
+- [X] For the large poster, load the low resolution image first and then switch to the high resolution image when complete.
+- [X] Customize the navigation bar.
+
+The following **additional** features are implemented:
+
+- [X] Added feature to see the trailer of respective movies.
+- [X] Shows release date of individual movies.
+- [X] 4 different tabs for Now Playing, Top Rated, Popular and Upcoming movies.
+
+Please list two areas of the assignment you'd like to **discuss further with your peers** during the next class (examples include better ways to implement something, how to extend your app in certain ways, etc):
+
+1. Maybe add collection view in front.
+2. Autoplay the trailer video.
+
+## Video Walkthrough 
+
+Here's a walkthrough of implemented user stories:
+
+<img src= "Flicks2.gif"/>
+
+GIF created with [LiceCap](http://www.cockos.com/licecap/).
+
+
 # Project 1 - Flicks
 
 Flicks is a movies app using the [The Movie Database API](http://docs.themoviedb.apiary.io/#).
@@ -16,7 +56,6 @@ The following **required** functionality is complete:
 The following **optional** features are implemented:
 
 - [X] User sees an error message when there's a networking error.
-- [ ] Movies are displayed using a CollectionView instead of a TableView.
 - [X] User can search for a movie.
 - [X] All images fade in as they are loading.
 - [X] Customize the UI -- Added Star Ratings for the movies

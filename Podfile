@@ -10,6 +10,7 @@ target 'Flicks' do
   pod 'AFNetworking'
   pod ‘MBProgressHUD’
   pod 'Cosmos', '~> 8.0'
+  pod 'youtube-ios-player-helper'
 
 
 end

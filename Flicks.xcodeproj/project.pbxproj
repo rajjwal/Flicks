@@ -14,6 +14,7 @@
 		DD4EFDEA1E410A5000DEF49E /* MoviesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD4EFDE91E410A5000DEF49E /* MoviesViewController.swift */; };
 		DD4EFDED1E411A7100DEF49E /* MovieCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD4EFDEC1E411A7100DEF49E /* MovieCell.swift */; };
 		DDB16F291E4A5D2200CBA20D /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB16F281E4A5D2200CBA20D /* DetailViewController.swift */; };
+		DDFA5B161E5140A400B2BFEA /* YouTubePlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDFA5B151E5140A400B2BFEA /* YouTubePlayerViewController.swift */; };
 		EE20FC60967A3883CDF1E295 /* Pods_Flicks.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2565CAFB1D02569BDA5342C9 /* Pods_Flicks.framework */; };
 /* End PBXBuildFile section */
 
@@ -30,6 +31,7 @@
 		DD4EFDE91E410A5000DEF49E /* MoviesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoviesViewController.swift; sourceTree = "<group>"; };
 		DD4EFDEC1E411A7100DEF49E /* MovieCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MovieCell.swift; sourceTree = "<group>"; };
 		DDB16F281E4A5D2200CBA20D /* DetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
+		DDFA5B151E5140A400B2BFEA /* YouTubePlayerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YouTubePlayerViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,6 +108,7 @@
 			children = (
 				DD4EFDE91E410A5000DEF49E /* MoviesViewController.swift */,
 				DDB16F281E4A5D2200CBA20D /* DetailViewController.swift */,
+				DDFA5B151E5140A400B2BFEA /* YouTubePlayerViewController.swift */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -145,6 +148,7 @@
 				TargetAttributes = {
 					DD4EFDD31E41095100DEF49E = {
 						CreatedOnToolsVersion = 8.2.1;
+						LastSwiftMigration = 0820;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -237,6 +241,7 @@
 				DD4EFDEA1E410A5000DEF49E /* MoviesViewController.swift in Sources */,
 				DD4EFDED1E411A7100DEF49E /* MovieCell.swift in Sources */,
 				DDB16F291E4A5D2200CBA20D /* DetailViewController.swift in Sources */,
+				DDFA5B161E5140A400B2BFEA /* YouTubePlayerViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -360,10 +365,13 @@
 			baseConfigurationReference = B7B47CE215C957CBAA0F984F /* Pods-Flicks.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				INFOPLIST_FILE = Flicks/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "IOS-Dev.Flicks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Flicks/Flicks-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
@@ -373,10 +381,12 @@
 			baseConfigurationReference = D1B6D4904C333657A248B6F7 /* Pods-Flicks.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				INFOPLIST_FILE = Flicks/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "IOS-Dev.Flicks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Flicks/Flicks-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
