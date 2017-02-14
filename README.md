@@ -23,10 +23,12 @@ The following **additional** features are implemented:
 - [X] Added feature to see the trailer of respective movies.
 - [X] Shows release date of individual movies.
 - [X] 4 different tabs for Now Playing, Top Rated, Popular and Upcoming movies.
+- [X] Added feature to show PG-13 if it is rated adult. 
+
 
 Please list two areas of the assignment you'd like to **discuss further with your peers** during the next class (examples include better ways to implement something, how to extend your app in certain ways, etc):
 
-1. Maybe add collection view in front.
+1. Add collection view in front.
 2. Autoplay the trailer video.
 
 ## Video Walkthrough 
@@ -79,9 +81,6 @@ Here's a walkthrough of implemented user stories:
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
-## Notes
-
-Describe any challenges encountered while building the app.
 
 ## License
 
